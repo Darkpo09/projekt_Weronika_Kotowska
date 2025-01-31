@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Podatkowy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="kalkulator">
+        <h1>Kalkulator Podatkowy</h1>
+        <label for="typ_umowy">Wybierz typ umowy:</label>
+        <select id="typ_umowy">
+            <option value="umowa_o_prace">Umowa o pracę</option>
+            <option value="umowa_o_dzielo">Umowa o dzieło</option>
+        </select>
+        
+        <label for="wiek">Czy masz 26 lat?</label>
+        <select id="wiek">
+            <option value="tak">Tak</option>
+            <option value="nie">Nie</option>
+        </select>
+        
+        <label for="wynagrodzenie">Podaj kwotę brutto:</label>
+        <input type="number" id="wynagrodzenie" placeholder="Wpisz kwotę">
+        
+        <button id="oblicz">Oblicz</button>
+        
+        <h2>Wynik:</h2>
+        <p id="wynik"></p>
+    </div>
+
+    <script>
+        document.getElementById('oblicz').addEventListener('click', function() {
+            // Pobranie danych z formularza
+            const typumowy = document.getElementById('typ_umowy').value;
+            const wiek = document.getElementById('wiek').value;
+            const wynagrodzenie = parseFloat(document.getElementById('wynagrodzenie').value);
+            const wynik = document.getElementById('wynik');
+
+            // alert o braku kwoty
+            if (!wynagrodzenie || wynagrodzenie <= 0) {
+                wynik.textContent = "Proszę wpisać poprawną kwotę.";
+                return;
+            }
+
+            // Obliczanie podatku w zależności od danych
+            let podatek = 0;
+            if (typumowy === "umowa_o_prace" && wiek === "nie") {
+                podatek = 0; // Zwolnienie z podatku dla młodych pracowników
+            } else {
+                podatek = typumowy === "umowa_o_prace" ? wynagrodzenie * 0.12 : wynagrodzenie * 0.18;
+            }
+
+            // Obliczanie wynagrodzenia netto
+            const netto = wynagrodzenie - podatek;
+
+            // Wyświetlenie wyniku
+            wynik.textContent = `Kwota netto: ${netto.toFixed(2)} zł (Podatek: ${podatek.toFixed(2)} zł)`;
+        });
+    </script>
+</body>
+</html>
+
+
